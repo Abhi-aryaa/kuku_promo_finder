@@ -1,6 +1,6 @@
 """LLM judge for shortlisted candidates. Provider-agnostic: swap model with --provider/--model or env vars.
 Providers: gemini (free tier), anthropic, openai (also any OpenAI-compatible endpoint via OPENAI_BASE_URL), cache (replay saved judgments), none."""
-import json, os, re, urllib.request, urllib.error, time, hashlib
+import json, os, re, urllib.request, urllib.error, time, threading
 from parser import fmt
 
 RUBRIC = """You are a senior social-video editor for a vertical microdrama app (ReelShort / DramaBox style).
@@ -28,10 +28,15 @@ CLIP (episode {ep}, {s}-{e}, {dur:.0f}s). Episode logline: {logline}
 {transcript}
 """
 
+_WORKING_GEMINI_MODEL = None
+_CACHE_LOCK = threading.Lock()
+
+
 def render(ep, segments, max_action=160):
     out = []
     for i, sg in enumerate(segments):
-        if len(segments) > 1: out.append(f"--- SEGMENT {i+1}: {fmt(sg.start)}-{fmt(sg.end)} ---")
+        if len(segments) > 1:
+            out.append(f"--- SEGMENT {i+1}: {fmt(sg.start)}-{fmt(sg.end)} ---")
         for b in ep.beats:
             if b.end > sg.start + 0.05 and b.start < sg.end - 0.05 and b.kind != "CAMERA":
                 if b.kind == "DIALOGUE":
@@ -41,68 +46,133 @@ def render(ep, segments, max_action=160):
                     out.append(f"[{fmt(b.start)}] ({b.kind}) {b.text[:max_action]}")
     return "\n".join(out)
 
+
 def build_prompt(context, ep, cand):
     segs = cand.segments
-    return RUBRIC.format(context=context, ep=ep.num, s=fmt(segs[0].start), e=fmt(segs[-1].end), dur=cand.duration,
-                         logline=ep.logline[:300], transcript=render(ep, segs))
+    return RUBRIC.format(
+        context=context,
+        ep=ep.num,
+        s=fmt(segs[0].start),
+        e=fmt(segs[-1].end),
+        dur=cand.duration,
+        logline=ep.logline[:300],
+        transcript=render(ep, segs),
+    )
+
 
 def _post(url, headers, body, retries=3):
     data = json.dumps(body).encode()
     for k in range(retries):
         try:
-            req = urllib.request.Request(url, data=data, headers={"Content-Type": "application/json", **headers})
-            return json.loads(urllib.request.urlopen(req, timeout=90).read())
+            req = urllib.request.Request(
+                url, data=data, headers={"Content-Type": "application/json", **headers}
+            )
+            return json.loads(urllib.request.urlopen(req, timeout=45).read())
         except urllib.error.HTTPError as ex:
-            if ex.code in (429, 500, 503) and k < retries - 1: time.sleep(4 * (k + 1)); continue
-            raise RuntimeError(f"{ex.code}: {ex.read()[:300]}")
+            err_body = ex.read()[:300].decode("utf-8", errors="replace")
+            if ex.code in (429, 500, 503) and k < retries - 1:
+                wait = 3 * (k + 1)
+                time.sleep(wait)
+                continue
+            raise RuntimeError(f"{ex.code}: {err_body}")
+
 
 def call_model(provider, model, prompt):
+    global _WORKING_GEMINI_MODEL
     if provider == "gemini":
         key = os.environ["GEMINI_API_KEY"]
+        # Use cached working model first so we NEVER repeat 404s on every single clip
+        if model:
+            candidates = [model]
+        elif _WORKING_GEMINI_MODEL:
+            candidates = [_WORKING_GEMINI_MODEL]
+        else:
+            candidates = ["gemini-2.5-flash", "gemini-2.5-flash-lite", "gemini-flash-latest", "gemini-2.0-flash"]
+
         last = None
-        for m in ([model] if model else ["gemini-2.5-flash", "gemini-flash-latest", "gemini-2.0-flash"]):   # older names get retired: try several
+        for m in candidates:
             try:
-                r = _post(f"https://generativelanguage.googleapis.com/v1beta/models/{m}:generateContent?key={key}", {},
-                          {"contents": [{"parts": [{"text": prompt}]}], "generationConfig": {"temperature": 0.2, "responseMimeType": "application/json"}})
+                gen_cfg = {
+                    "temperature": 0.2,
+                    "responseMimeType": "application/json",
+                }
+                # Disable slow thinking tokens on 2.5 models for 5x faster JSON judging
+                if "2.5" in m:
+                    gen_cfg["thinkingConfig"] = {"thinkingBudget": 0}
+                r = _post(
+                    f"https://generativelanguage.googleapis.com/v1beta/models/{m}:generateContent?key={key}",
+                    {},
+                    {"contents": [{"parts": [{"text": prompt}]}], "generationConfig": gen_cfg},
+                )
+                if not model:
+                    _WORKING_GEMINI_MODEL = m
                 return r["candidates"][0]["content"]["parts"][0]["text"]
             except RuntimeError as ex:
                 last = f"[{m}] {ex}"
-                if not str(ex).startswith("404"): break
+                if not str(ex).startswith("404"):
+                    break
         raise RuntimeError(last)
+
     if provider == "anthropic":
-        key = os.environ["ANTHROPIC_API_KEY"]; model = model or "claude-haiku-4-5"
-        r = _post("https://api.anthropic.com/v1/messages", {"x-api-key": key, "anthropic-version": "2023-06-01"},
-                  {"model": model, "max_tokens": 700, "temperature": 0.2, "messages": [{"role": "user", "content": prompt}]})
+        key = os.environ["ANTHROPIC_API_KEY"]
+        model = model or "claude-haiku-4-5"
+        r = _post(
+            "https://api.anthropic.com/v1/messages",
+            {"x-api-key": key, "anthropic-version": "2023-06-01"},
+            {"model": model, "max_tokens": 700, "temperature": 0.2, "messages": [{"role": "user", "content": prompt}]},
+        )
         return r["content"][0]["text"]
+
     if provider == "openai":
-        key = os.environ["OPENAI_API_KEY"]; model = model or "gpt-4o-mini"
+        key = os.environ["OPENAI_API_KEY"]
+        model = model or "gpt-4o-mini"
         base = os.environ.get("OPENAI_BASE_URL", "https://api.openai.com/v1")
-        r = _post(f"{base}/chat/completions", {"Authorization": f"Bearer {key}"},
-                  {"model": model, "temperature": 0.2, "response_format": {"type": "json_object"}, "messages": [{"role": "user", "content": prompt}]})
+        r = _post(
+            f"{base}/chat/completions",
+            {"Authorization": f"Bearer {key}"},
+            {
+                "model": model,
+                "temperature": 0.2,
+                "response_format": {"type": "json_object"},
+                "messages": [{"role": "user", "content": prompt}],
+            },
+        )
         return r["choices"][0]["message"]["content"]
+
     raise ValueError(provider)
+
 
 def parse_json(txt):
     txt = re.sub(r"^```(?:json)?|```$", "", txt.strip(), flags=re.M).strip()
     m = re.search(r"\{.*\}", txt, re.S)
     return json.loads(m.group(0))
 
+
 def cand_key(cand):
     return "|".join(f"{s.episode}:{s.start:.2f}-{s.end:.2f}" for s in cand.segments)
 
-SLEEP = 0.0   # seconds to wait after each LIVE call (free tiers allow only a few requests per minute)
+
+SLEEP = 0.0
+
 
 def judge(provider, model, context, ep, cand, cache_path=None):
-    """Returns dict judgment or None. Judgments are cached by candidate key so re-runs are free."""
-    cache = json.load(open(cache_path)) if cache_path and os.path.exists(cache_path) else {}
+    """Returns dict judgment or None. Thread-safe caching by candidate key."""
     k = cand_key(cand)
-    if k in cache: return cache[k]
-    if provider in ("none", "cache"): return None
+    with _CACHE_LOCK:
+        cache = json.load(open(cache_path)) if cache_path and os.path.exists(cache_path) else {}
+        if k in cache:
+            return cache[k]
+    if provider in ("none", "cache"):
+        return None
     try:
         j = parse_json(call_model(provider, model, build_prompt(context, ep, cand)))
-        if SLEEP: time.sleep(SLEEP)
+        if SLEEP:
+            time.sleep(SLEEP)
     except Exception as ex:
         return {"error": str(ex)[:200]}
     if cache_path:
-        cache[k] = j; json.dump(cache, open(cache_path, "w"), indent=1)
+        with _CACHE_LOCK:
+            cache = json.load(open(cache_path)) if os.path.exists(cache_path) else {}
+            cache[k] = j
+            json.dump(cache, open(cache_path, "w"), indent=1)
     return j

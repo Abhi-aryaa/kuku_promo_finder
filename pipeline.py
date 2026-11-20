@@ -2,12 +2,11 @@
 """Promo finder: screenplay folder -> ranked promo cuts (episode, start/end of every segment, hook, cliffhanger, why).
 Usage:
   python pipeline.py --input "<folder or .zip>" --out outputs --provider none
-  GEMINI_API_KEY=... python pipeline.py --input "<folder or .zip>" --provider gemini --workers 4 --sleep 0.5
+  GEMINI_API_KEY=... python pipeline.py --input "<folder or .zip>" --provider gemini --batch-size 5 --sleep 4.2
 """
 import argparse, json, csv, os, re, sys
-from concurrent.futures import ThreadPoolExecutor, as_completed
 from parser import load_pack, fmt
-from candidates import singles, joins, select, Segment
+from candidates import singles, joins, select
 import llm
 
 
@@ -65,14 +64,15 @@ def main():
     ap.add_argument("--provider", default="none", choices=["none", "gemini", "anthropic", "openai", "cache"])
     ap.add_argument("--model", default=None)
     ap.add_argument("--cache", default="llm_cache.json")
-    ap.add_argument("--per-ep", type=int, default=2, help="shortlist size per episode (default 2 = 100 calls instead of 150)")
+    ap.add_argument("--per-ep", type=int, default=2, help="shortlist size per episode (default 2)")
     ap.add_argument("--keep", type=int, default=2, help="max promos kept per episode in final list")
     ap.add_argument("--min-score", type=float, default=0.0)
-    ap.add_argument("--sleep", type=float, default=None, help="seconds between live LLM calls (default 0.5 for gemini)")
-    ap.add_argument("--workers", type=int, default=4, help="parallel API workers (default 4; use 1 for strict rate limit)")
+    ap.add_argument("--batch-size", type=int, default=5, help="clips judged per API call (default 5 -> ~20 calls for 50 eps)")
+    ap.add_argument("--sleep", type=float, default=None, help="seconds between live API calls (default 4.2 for Gemini 15 RPM)")
     a = ap.parse_args()
 
     os.makedirs(a.out, exist_ok=True)
+    print("STATUS: Parsing screenplay pack...", flush=True)
     if a.input.lower().endswith(".zip"):
         import zipfile, tempfile, glob
         tmp = tempfile.mkdtemp()
@@ -83,34 +83,35 @@ def main():
     eps = load_pack(a.input)
     byn = {e.num: e for e in eps}
     ctx = build_context(eps)
+    print(f"STATUS: Generating candidate cuts across {len(eps)} episodes...", flush=True)
+
     pool = []
     for ep in eps:
         pool += select(singles(ep) + joins(ep), per_ep=a.per_ep)
     hmax = max(c.total for c in pool)
     use_llm = a.provider != "none"
-    llm.SLEEP = a.sleep if a.sleep is not None else (0.5 if a.provider == "gemini" else 0.0)
+    llm.SLEEP = a.sleep if a.sleep is not None else (4.2 if a.provider == "gemini" else 0.0)
 
-    # Probe 1st candidate synchronously so Gemini discovers/caches the working model before fan-out
     judgments = [None] * len(pool)
     if use_llm and pool:
-        ep0 = byn[pool[0].segments[0].episode]
-        judgments[0] = llm.judge(a.provider, a.model, ctx, ep0, pool[0], a.cache)
-        print(f"Progress: 1/{len(pool)}", flush=True)
+        bs = max(1, a.batch_size if a.provider != "cache" else len(pool))
+        total_batches = (len(pool) + bs - 1) // bs
+        for b_idx in range(total_batches):
+            start = b_idx * bs
+            end = min(len(pool), start + bs)
+            batch_items = [(byn[pool[i].segments[0].episode], pool[i]) for i in range(start, end)]
+            print(f"PROGRESS: Judging batch {b_idx + 1}/{total_batches} (clips {start + 1}-{end}/{len(pool)})...", flush=True)
+            res = llm.judge_batch(a.provider, a.model, ctx, batch_items, a.cache)
+            for offset, j in enumerate(res):
+                judgments[start + offset] = j
 
-        if len(pool) > 1:
-            workers = max(1, a.workers if a.provider != "cache" else 1)
-            done = 1
-            with ThreadPoolExecutor(max_workers=workers) as ex:
-                fut_map = {
-                    ex.submit(llm.judge, a.provider, a.model, ctx, byn[pool[i].segments[0].episode], pool[i], a.cache): i
-                    for i in range(1, len(pool))
-                }
-                for fut in as_completed(fut_map):
-                    idx = fut_map[fut]
-                    judgments[idx] = fut.result()
-                    done += 1
-                    if done % 10 == 0 or done == len(pool):
-                        print(f"Progress: {done}/{len(pool)}", flush=True)
+            # Fail fast on batch 1 if EVERY clip errored (wrong key, 0 quota, bad model name)
+            if b_idx == 0 and a.provider != "cache" and all(j and "error" in j for j in res):
+                first_err = res[0]["error"]
+                sys.exit(
+                    f"Stopped immediately on batch 1 to protect your quota. Error: {first_err}\n"
+                    "Tip: Use model 'gemini-3.5-flash-lite' or 'gemini-3.1-flash-lite' (500 RPD free tier)."
+                )
 
     rows = []
     n_ok = n_err = n_missing = 0
@@ -143,14 +144,15 @@ def main():
             j = j or {}
         rows.append(dict(c=c, ep=ep, final=round(final, 2), hook=hook, cliff=cliff, why=why, problem=prob, src=src, j=j))
 
-    print(f"Judge '{a.provider}': {n_ok}/{len(pool)} clips scored, {n_err} failed, {n_missing} not in cache. Live API calls: {llm.STATS['live']}; reused from a saved file: {llm.STATS['cached']}.")
+    print(
+        f"Judge '{a.provider}': {n_ok}/{len(pool)} clips scored ({llm.STATS['live']} live, {llm.STATS['cached']} cached), "
+        f"{n_err} failed, {n_missing} not in cache.",
+        flush=True,
+    )
     if use_llm and a.provider != "cache" and n_ok == 0:
-        sys.exit(
-            f"ALL model calls failed, so nothing was scored by the LLM. First error: {first_err}\n"
-            "Check the API key / model name / quota. Not writing results labelled as LLM-judged."
-        )
+        sys.exit(f"ALL model calls failed. First error: {first_err}")
     if n_err:
-        print(f"WARNING: {n_err} clips fell back to rule-score only (scored_by = heuristic). First error: {first_err}")
+        print(f"WARNING: {n_err} clips fell back to heuristic. First error: {first_err}", flush=True)
 
     rows.sort(key=lambda r: -r["final"])
     capped = []
@@ -195,7 +197,7 @@ def main():
             }
         )
 
-    json.dump(out, open(os.path.join(a.out, "promos.json"), "w"), indent=1, ensure_ascii=False)
+    json.dump(out, open(os.path.join(a.out, "promos.json"), "w", encoding="utf-8"), indent=1, ensure_ascii=False)
     with open(os.path.join(a.out, "promos.csv"), "w", newline="", encoding="utf-8") as f:
         w = csv.writer(f)
         w.writerow(["rank", "tier", "type", "score", "duration_s", "segments (episode start-end)", "hook", "cliffhanger", "why_it_works", "known_issue"])
@@ -223,7 +225,7 @@ def main():
             segs = " + ".join(f"**Ep {s['episode']}  {s['start']} -> {s['end']}**" for s in p["segments"])
             f.write(f"## #{p['rank']}  [{p['tier']}]  {segs}  ({p['duration_s']}s, {p['type']}, score {p['score']})\n")
             f.write(f"- **Hook:** {p['hook']}\n- **Cliffhanger:** {p['cliffhanger']}\n- **Why it works:** {p['why_it_works']}\n- **Known issue:** {p['known_issue']}\n\n```\n{p['transcript']}\n```\n\n")
-    print(f"wrote {len(out)} promos to {a.out}/")
+    print(f"wrote {len(out)} promos to {a.out}/", flush=True)
 
 
 if __name__ == "__main__":

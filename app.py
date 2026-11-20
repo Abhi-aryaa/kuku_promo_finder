@@ -6,8 +6,16 @@ st.set_page_config(page_title="Promo Finder", layout="wide")
 st.title("Promo Finder - ranked 20-60s promo cuts from microdrama screenplays")
 
 up = st.file_uploader("Screenplay pack (.zip of episode-*.txt)", type="zip")
-prov = st.selectbox("Judge", ["none (free, heuristics only)", "gemini", "anthropic", "openai", "cache (replay saved judgments)"])
-model = st.text_input("Model override (optional, e.g. gemini-2.5-flash)", "")
+prov = st.selectbox(
+    "Judge",
+    ["none (free, heuristics only)", "gemini", "anthropic", "openai", "cache (replay saved judgments)"],
+)
+
+default_model = "gemini-3.5-flash-lite" if prov == "gemini" else ""
+model = st.text_input(
+    "Model override (for Gemini free tier, keep 'gemini-3.5-flash-lite' or 'gemini-3.1-flash-lite' — 500 req/day)",
+    value=default_model,
+)
 key = st.text_input("API key (kept in memory only)", type="password")
 
 c1, c2, c3 = st.columns(3)
@@ -16,9 +24,9 @@ with c1:
 with c2:
     per_ep = st.slider("Candidates judged / episode", 1, 3, 2)
 with c3:
-    workers = st.slider("Parallel workers (faster)", 1, 8, 4)
+    batch_size = st.slider("Clips per API call (5 = ~20 calls total)", 1, 8, 5)
 
-if st.button("Find promos") and up:
+if st.button("Find promos", type="primary") and up:
     d = tempfile.mkdtemp()
     zp = os.path.join(d, "pack.zip")
     open(zp, "wb").write(up.read())
@@ -27,40 +35,49 @@ if st.button("Find promos") and up:
     if key:
         env[{"gemini": "GEMINI_API_KEY", "anthropic": "ANTHROPIC_API_KEY", "openai": "OPENAI_API_KEY"}.get(p, "X")] = key
 
-    cache_file = os.path.join(HERE, "llm_cache.json") if p == "cache" else os.path.join(d, "live_cache.json")
+    cache_file = os.path.join(HERE, "llm_cache.json")
     cmd = [
         sys.executable,
+        "-u",
         os.path.join(HERE, "pipeline.py"),
         "--input", zp,
         "--out", os.path.join(d, "out"),
         "--provider", p,
         "--keep", str(keep),
         "--per-ep", str(per_ep),
-        "--workers", str(workers),
-        "--sleep", "0.3",
+        "--batch-size", str(batch_size),
+        "--sleep", "4.2" if p == "gemini" else "0.0",
         "--cache", cache_file,
     ]
-    if model:
-        cmd += ["--model", model]
+    if model.strip():
+        cmd += ["--model", model.strip()]
 
-    status_box = st.empty()
     logs = []
-    proc = subprocess.Popen(cmd, env=env, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, cwd=HERE)
-    for line in proc.stdout:
-        line = line.strip()
-        logs.append(line)
-        if line.startswith("Progress:"):
-            status_box.info(f"Running LLM judge... {line}")
-    stderr = proc.stderr.read()
-    proc.wait()
+    with st.status("Starting Promo Finder...", expanded=True) as status:
+        progress_line = st.empty()
+        progress_line.write("Parsing screenplay zip and generating candidate cuts...")
+        proc = subprocess.Popen(cmd, env=env, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, cwd=HERE)
+        for line in proc.stdout:
+            line = line.strip()
+            if not line:
+                continue
+            logs.append(line)
+            if line.startswith("STATUS:") or line.startswith("PROGRESS:"):
+                progress_line.write(line.split(":", 1)[1].strip())
+        stderr = proc.stderr.read()
+        proc.wait()
+
+        if proc.returncode:
+            status.update(label="Run failed", state="error", expanded=True)
+        else:
+            status.update(label="Done! Promos ranked.", state="complete", expanded=False)
 
     if proc.returncode:
         st.error(stderr[-1500:] if stderr else "\n".join(logs[-10:]))
     else:
-        status_box.empty()
-        P = json.load(open(os.path.join(d, "out", "promos.json")))
-        st.success(f"{len(P)} promos")
-        st.info("\n".join(logs[-5:]))
+        P = json.load(open(os.path.join(d, "out", "promos.json"), encoding="utf-8"))
+        st.success(f"{len(P)} promos ready")
+        st.info("\n".join(logs[-4:]))
         if any(x["scored_by"] == "heuristic" for x in P) and p != "none":
             st.warning("Some or all clips were NOT scored by the model (scored_by = heuristic). See the message above.")
         st.dataframe(

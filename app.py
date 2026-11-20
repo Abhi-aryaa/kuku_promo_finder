@@ -27,7 +27,7 @@ if st.button("Find promos") and up:
     if key:
         env[{"gemini": "GEMINI_API_KEY", "anthropic": "ANTHROPIC_API_KEY", "openai": "OPENAI_API_KEY"}.get(p, "X")] = key
 
-    cache_file = os.path.join(HERE, "llm_cache.json")
+    cache_file = os.path.join(HERE, "llm_cache.json") if p == "cache" else os.path.join(d, "live_cache.json")
     cmd = [
         sys.executable,
         os.path.join(HERE, "pipeline.py"),

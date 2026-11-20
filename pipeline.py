@@ -143,7 +143,7 @@ def main():
             j = j or {}
         rows.append(dict(c=c, ep=ep, final=round(final, 2), hook=hook, cliff=cliff, why=why, problem=prob, src=src, j=j))
 
-    print(f"Judge '{a.provider}': {n_ok}/{len(pool)} clips scored by the model, {n_err} failed, {n_missing} not in cache.")
+    print(f"Judge '{a.provider}': {n_ok}/{len(pool)} clips scored, {n_err} failed, {n_missing} not in cache. Live API calls: {llm.STATS['live']}; reused from a saved file: {llm.STATS['cached']}.")
     if use_llm and a.provider != "cache" and n_ok == 0:
         sys.exit(
             f"ALL model calls failed, so nothing was scored by the LLM. First error: {first_err}\n"

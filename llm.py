@@ -153,6 +153,7 @@ def cand_key(cand):
 
 
 SLEEP = 0.0
+STATS = {"live": 0, "cached": 0}   # how many judgments came from a real API call vs a saved file
 
 
 def judge(provider, model, context, ep, cand, cache_path=None):
@@ -160,12 +161,18 @@ def judge(provider, model, context, ep, cand, cache_path=None):
     k = cand_key(cand)
     with _CACHE_LOCK:
         cache = json.load(open(cache_path)) if cache_path and os.path.exists(cache_path) else {}
-        if k in cache:
-            return cache[k]
+        entry = cache.get(k)
+        # A saved judgment is reused only if it came from the SAME provider (or we were asked to replay the cache).
+        # Otherwise a Gemini/OpenAI run would silently return someone else's scores (e.g. the bundled Claude-in-chat ones).
+        if entry and (provider == "cache" or str(entry.get("judge", "")).startswith(provider)):
+            STATS["cached"] += 1
+            return entry
     if provider in ("none", "cache"):
         return None
     try:
         j = parse_json(call_model(provider, model, build_prompt(context, ep, cand)))
+        j["judge"] = provider + (":" + model if model else "")
+        with _CACHE_LOCK: STATS["live"] += 1
         if SLEEP:
             time.sleep(SLEEP)
     except Exception as ex:

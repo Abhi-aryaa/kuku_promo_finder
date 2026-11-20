@@ -58,6 +58,7 @@ Be a harsh judge: most clips should score 4-6; reserve 8+ for clips you would ge
 # Official active free-tier high-quota models (15 RPM / 500 RPD on Google AI Studio)
 DEFAULT_GEMINI_MODELS = ["gemini-3.5-flash-lite", "gemini-3.1-flash-lite"]
 _WORKING_GEMINI_MODEL = None
+_GEMINI_LIST = None
 _CACHE_LOCK = threading.Lock()
 SLEEP = 0.0
 STATS = {"live": 0, "cached": 0}
@@ -118,9 +119,26 @@ def _post(url, headers, body, retries=3):
             if ex.code in (429, 500, 503) and k < retries - 1:
                 if "limit: 0" in err_body.lower():
                     raise RuntimeError(f"{ex.code}: {err_body}")
+                if ex.code == 429 and re.search(r"PerDay|per day|daily", err_body, re.I):
+                    raise RuntimeError(f"429 DAILY QUOTA used up for this model: {err_body}")
                 time.sleep(5 * (k + 1))
                 continue
             raise RuntimeError(f"{ex.code}: {err_body}")
+
+
+def _gemini_models(key):
+    """Models this key can call, Flash-Lite only (largest free quota), newest first. Cached after the first lookup."""
+    global _GEMINI_LIST
+    if _GEMINI_LIST is None:
+        names = []
+        try:
+            d = json.loads(urllib.request.urlopen(f"https://generativelanguage.googleapis.com/v1beta/models?pageSize=200&key={key}", timeout=30).read())
+            names = [m["name"].split("/")[-1] for m in d.get("models", []) if "generateContent" in m.get("supportedGenerationMethods", [])]
+        except Exception:
+            pass
+        bad = ("tts", "image", "live", "audio", "transcribe", "embedding", "robotics", "computer", "learnlm", "gemma", "imagen", "veo")
+        _GEMINI_LIST = sorted([n for n in names if "flash" in n and "lite" in n and not any(b in n for b in bad)], reverse=True)
+    return _GEMINI_LIST
 
 
 def call_model(provider, model, prompt):
@@ -132,10 +150,14 @@ def call_model(provider, model, prompt):
         elif _WORKING_GEMINI_MODEL:
             candidates = [_WORKING_GEMINI_MODEL]
         else:
-            candidates = DEFAULT_GEMINI_MODELS
+            candidates = list(DEFAULT_GEMINI_MODELS)
 
         last = None
-        for m in candidates:
+        tried = set()
+        while candidates:
+            m = candidates.pop(0)
+            if m in tried: continue
+            tried.add(m)
             try:
                 gen_cfg = {
                     "temperature": 0.2,
@@ -151,8 +173,12 @@ def call_model(provider, model, prompt):
                 return r["candidates"][0]["content"]["parts"][0]["text"]
             except RuntimeError as ex:
                 last = f"[{m}] {ex}"
-                if not str(ex).startswith("404"):
+                if "DAILY QUOTA" in str(ex):
+                    _WORKING_GEMINI_MODEL = None          # this model is finished for today: try another
+                elif not str(ex).startswith("404"):
                     break
+                if not candidates and not model:          # defaults exhausted: try what this key can actually use
+                    candidates = [x for x in _gemini_models(key)[:3] + ["gemini-2.5-flash-lite"] if x not in tried]
         raise RuntimeError(last)
 
     if provider == "anthropic":
@@ -221,9 +247,14 @@ def judge_batch(provider, model, context, ep_cands, cache_path=None):
     """Judges a batch of (ep, cand) tuples in ONE API call (saves 5x quota & time)."""
     results = [None] * len(ep_cands)
     to_call = []  # (idx, clip_id, cand_key, ep, cand)
+    live = provider not in ("none", "cache")
+    read_path = cache_path
+    if live and cache_path:                       # live judgments go to llm_cache_<provider>.json, never into the bundled file
+        cache_path = cache_path[:-5] + f"_{provider}.json" if cache_path.endswith(".json") else cache_path + f".{provider}"
 
     with _CACHE_LOCK:
-        cache = _load_cache(cache_path)
+        cache = _load_cache(read_path)
+        if live: cache.update(_load_cache(cache_path))
         for i, (ep, cand) in enumerate(ep_cands):
             k = cand_key(cand)
             entry = cache.get(k)

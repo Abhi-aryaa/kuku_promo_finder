@@ -6,8 +6,9 @@ Usage:
 """
 import argparse, json, csv, os, re, sys
 from parser import load_pack, fmt
-from candidates import singles, joins, select
+from candidates import singles, joins, select, _beats_in
 import llm
+import scoring as S
 
 
 def build_context(eps, n=3):
@@ -40,6 +41,29 @@ def apply_trim(ep, cand, j):
         if 20 <= ne - ns <= 60:
             sg.start, sg.end = round(ns, 2), round(ne, 2)
             cand.flags.append("llm_trimmed")
+
+
+def _norm(s):
+    return re.sub(r"[^a-z0-9 ]", "", (s or "").lower())
+
+
+def refresh_text_after_trim(ep, cand, hook, cliff):
+    """If the LLM trimmed the clip, its quoted hook/cliffhanger may describe material that was cut off.
+    Replace such text with the real first / last line of the trimmed clip (found in Gemini run: 5 of 17 trims)."""
+    sg = cand.segments[0]
+    tr = _norm(llm.render(ep, cand.segments))
+    inside = _beats_in(ep, sg.start, sg.end)
+    changed = False
+    if _norm(hook)[:25] not in tr:
+        _, hb = S.hook_score(inside, sg.start)
+        first = [b for b in inside if b.kind in ("DIALOGUE", "ACTION")]
+        hb = hb or (first[0] if first else None)
+        if hb: hook, changed = hb.text, True
+    last = [b for b in inside if b.kind in ("DIALOGUE", "ACTION")]
+    if last and _norm(cliff)[:25] not in tr and not any(_norm(cliff)[:25] in _norm(b.text) for b in inside):
+        cliff, changed = last[-1].text, True
+    if changed: cand.flags.append("text_refreshed_after_trim")
+    return hook, cliff
 
 
 def why_template(c, ep):
@@ -110,7 +134,7 @@ def main():
                 first_err = res[0]["error"]
                 sys.exit(
                     f"Stopped immediately on batch 1 to protect your quota. Error: {first_err}\n"
-                    "Tip: Use model 'gemini-3.5-flash-lite' or 'gemini-3.1-flash-lite' (500 RPD free tier)."
+                    "Check: API key, model name, and the free-tier quota (a daily 429 means wait for the reset or pick another model)."
                 )
 
     rows = []
@@ -132,6 +156,8 @@ def main():
             hook = j.get("hook_line") or (c.hook_beat.text if c.hook_beat else "")
             cliff = j.get("cliffhanger") or (c.cliff_beat.text if c.cliff_beat else "")
             why = j.get("why") or why_template(c, ep)
+            if "llm_trimmed" in c.flags:
+                hook, cliff = refresh_text_after_trim(ep, c, hook, cliff)
             prob = j.get("problem", "none")
             src = "llm+heuristic"
         else:
@@ -193,6 +219,7 @@ def main():
                 "flags": c.flags,
                 "sub_scores": c.scores,
                 "scored_by": r["src"],
+                "judge": r["j"].get("judge", "") if r["src"] != "heuristic" else "",
                 "transcript": llm.render(r["ep"], c.segments),
             }
         )

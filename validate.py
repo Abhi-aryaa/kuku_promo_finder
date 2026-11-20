@@ -1,7 +1,10 @@
 """Sanity checks + quality report on a run's promos.json. Usage: python validate.py <outputs_dir> <input_folder>"""
 import json, sys, statistics, re
+import os, glob, zipfile, tempfile
 from parser import load_pack
 out, inp = sys.argv[1], sys.argv[2]
+if inp.lower().endswith(".zip"):
+    t = tempfile.mkdtemp(); zipfile.ZipFile(inp).extractall(t); inp = os.path.dirname(glob.glob(t + "/**/episode-*.txt", recursive=True)[0])
 P = json.load(open(f"{out}/promos.json")); eps = {e.num: e for e in load_pack(inp)}
 bad = []; starts_speech = ends_ep_end = 0; durs = []
 for p in P:

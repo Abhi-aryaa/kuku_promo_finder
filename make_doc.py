@@ -1,0 +1,44 @@
+from reportlab.lib.pagesizes import A4
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle
+from reportlab.lib.styles import ParagraphStyle
+from reportlab.lib import colors
+from reportlab.lib.units import cm
+B = ParagraphStyle("b", fontName="Helvetica", fontSize=9.3, leading=11.8, spaceAfter=2.2)
+H = ParagraphStyle("h", fontName="Helvetica-Bold", fontSize=10.8, leading=13.5, spaceBefore=4.5, spaceAfter=1.5, textColor=colors.HexColor("#1a3c6e"))
+T = ParagraphStyle("t", fontName="Helvetica-Bold", fontSize=13, leading=16, spaceAfter=1)
+C = ParagraphStyle("c", parent=B, fontSize=8.3, leading=10.2)
+bl = lambda s: Paragraph("&bull; " + s, ParagraphStyle("bl", parent=B, leftIndent=9, firstLineIndent=-7))
+d = SimpleDocTemplate("Kuku_AI_Generalist_Solution_Problem1.pdf", pagesize=A4, leftMargin=1.6*cm, rightMargin=1.6*cm, topMargin=1.4*cm, bottomMargin=1.3*cm)
+S = []
+S.append(Paragraph("Kuku AI Generalist Assignment - Problem 1: Find the Promos", T))
+S.append(Paragraph("[Name] | [Roll no.] | [Branch] | Prototype: [GitHub/Colab link] | Raw outputs: [Drive link] | Video: [link]", C))
+S.append(Paragraph("1. Why Problem 1, and how I scoped it", H))
+S.append(Paragraph("An editor today watches every episode to find promo moments, and new shows ship weekly - the cost grows with every show and every language, while the judgement (hook, cliffhanger, stand-alone) is repeatable enough to write down. Problem 1 is also the only one with real inputs (50 screenplays, ~103 min), so I can show real runs and real failures. I built a tool that outputs, for each promo: every segment's episode + start/end, hook, cliffhanger, one-line reason, a rank and a known-issue flag.", B))
+S.append(Paragraph("Assumptions (brief gave no answers): (a) timestamps are episode-relative, so a promo is episode + start/end; (b) a promo is one stretch or a <=2-segment cut from one episode that skips a lull (cross-episode stitching left out - continuity risk); (c) cuts snap to line boundaries with ~0.3 s padding and never split a spoken line; (d) I only see the screenplay, not picture or sound, so 'delivery' comes from the script's tags and sound-FX notes; (e) at most 2 promos kept per episode; (f) late-arc reveals (Alexander is the Duke, eps 39-46) are spoilers for a cold viewer and are penalised, not banned.", B))
+S.append(Paragraph("2. How it works - what is code, what is AI, where the human sits", H))
+S.append(bl("<b>Code (deterministic):</b> parse screenplays; enumerate every 20-60 s window that starts/ends on a line (thousands per episode) plus 'joined' cuts; enforce duration, line-boundary and non-overlap rules. I do not let an LLM invent timestamps - it only picks from times the code produced."))
+S.append(bl("<b>Cheap rule scorer (free, offline):</b> hook = intensity of what happens in the first 3 s; cliffhanger = tail of the clip (episode-end, question/threat/reveal, door-bursts-open, ominous sting, no 'thank you / together' closure); stand-alone = few speakers, no 'as I said', earlier episode; pace; spoiler flag. It shortlists the top 3 per episode (141 clips from ~20k candidates)."))
+S.append(bl("<b>LLM judge (swappable):</b> reads each shortlisted clip's transcript + show context and returns JSON (hook, cliffhanger, stand-alone, spoiler risk, overall, why, problem, optional trim). Final score = 0.20 heuristic + 0.65 judge + 0.15 stand-alone, minus a spoiler penalty; ranking discounts a 2nd promo from the same episode by 1 point so the 'post first' list spreads across the plot. Providers: Gemini (free tier), Claude, OpenAI or any OpenAI-compatible endpoint via <font face='Courier'>--provider/--model</font>; judgments are cached, so interview re-runs on new input are fast."))
+S.append(bl("<b>Human:</b> the editor approves/edits cut points; Tier A = top 10 (post first), B = next 20, C = backlog. Output is CSV/JSON/Markdown with transcripts, so review takes seconds per clip."))
+S.append(Paragraph("<b>Important disclosure:</b> I had no API key in my build environment, so the LLM scores in <i>run_B</i> were produced by Claude, used in chat as the judge over the 141-clip shortlist with the same rubric the code sends to APIs. The API path was tested with a stubbed response only, not a live call. <i>run_A</i> is the fully reproducible heuristic-only run (no key needed).", B))
+S.append(Paragraph("3. Results on the full pack (run_B)", H))
+rows = [["#", "Cut", "Hook", "Cliffhanger", "Why it works"],
+ ["1", "Ep12 01:05-01:27 (22s)", "'Fail, or refuse, and your husband hangs.'", "She locks eyes with the villain: 'Tell me where the garden is'", "Life-or-death ultimatum, clear in 3 s, ends on her choice"],
+ ["2", "Ep3 01:25-01:34 + 01:50-02:25 (44s)", "Stranger blocks the guard's strike", "Kneels: 'accept my hand'", "Abandoned bride gets a stranger's proposal; cut skips the lull"],
+ ["3", "Ep27 00:34-00:55 (21s)", "'My lost son wore that ring!'", "Doors burst open on the villains", "Reveal + interruption in 21 s (mild spoiler)"],
+ ["4", "Ep23 01:21-02:11 (50s)", "'Poison? - Arsenic.'", "'Someone is coming'", "Reveal then threat; tight 50 s"],
+ ["5", "Ep32 01:59-02:34 (35s)", "'Silence! Silence!'", "Branding iron stops at her eye", "Peak tension; flagged graphic - check platform rules"]]
+t = Table([[Paragraph(c, C) for c in r] for r in rows], colWidths=[0.6*cm, 3.4*cm, 3.5*cm, 4.3*cm, 5.6*cm])
+t.setStyle(TableStyle([("GRID", (0, 0), (-1, -1), .3, colors.grey), ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#e8eef8")), ("VALIGN", (0, 0), (-1, -1), "TOP"), ("TOPPADDING", (0, 0), (-1, -1), 1.2), ("BOTTOMPADDING", (0, 0), (-1, -1), 1.2)]))
+S.append(t); S.append(Spacer(1, 3))
+S.append(Paragraph("99 promos across all 50 episodes (10 Tier A / 20 B / 69 C), median 31 s, range 20-59 s. Automatic checks: 0 violations of duration/line-boundary/range rules; 92 of 100 segments open on speech within 1.5 s; 34 end at an episode's end; 1 joined cut survived ranking (joins cost 0.5 points for continuity risk). Full ranked list: raw_outputs/run_B_llm_judged/.", B))
+S.append(Paragraph("4. How I know it is good - and where it fails", H))
+S.append(bl("<b>Cheap ranker vs judge on the 141-clip shortlist:</b> Spearman 0.45; top-10 overlap 3/10, top-20 overlap 9/20. Heuristic top-20 averaged 6.45 vs 5.23 for the shortlist, so it works as a recall filter but is a poor ranker - that is why the judge sits on top."))
+S.append(bl("<b>Heuristic false positives:</b> Ep37 01:45 (rank 5, judge 4.5) - a defiant speech full of '!' and 'cannot', ending on the villain sipping wine, nothing left open; Ep43 01:33 (rank 4) - ends on 'Going somewhere, Lord Sterling?', strong in isolation but a stranger has no idea who Sterling is."))
+S.append(bl("<b>Heuristic misses:</b> Ep26 01:19 (rank 126, judge 7.5) and Ep5 00:29 (rank 109, judge 7.0, the ledger thrown into mud) - the great moment sits at the end of a plain-sounding opening, so keyword scoring under-rates it; the judge's trim option is the intended fix, but I did not test trims live."))
+S.append(bl("<b>Other honest limits:</b> (1) the shortlist is capped at 3 per episode, so a good clip the rule scorer ranks 4th is never seen by the judge; (2) one judge, no human labels - I have not compared against what Kuku's editors actually posted, which is the first thing I would do; (3) 12 clips are flagged needs_context and 6 spoiler-risk (eps 39-46); (4) screenplay timestamps may drift from the final video; (5) lexicons are English - other languages rely on the LLM stage; (6) 'joined' cuts are rarely chosen, so the multi-moment case is thinly tested."))
+S.append(Paragraph("5. Scaling to every show, and cost", H))
+S.append(Paragraph("Per show: parse + candidates ~36 s (measured) on one CPU core (no GPU); the judge sees only ~3 clips per episode (~1k tokens each), so a 50-episode show is ~140 short calls - roughly 0.1-0.3 USD on a small model (my estimate, not measured), or free on Gemini's free tier. Weekly new shows just add folders; judgments are cached by clip, and the model is a flag. Next steps: (a) label 30 editor-picked promos per show and report recall@10; (b) per-language lexicons or LLM-only scoring; (c) auto-learn each show's spoiler terms from the finale loglines; (d) learn weights from post performance (views, completion rate) - the real success metric.", B))
+S.append(Paragraph("6. Tools used, and where they got it wrong", H))
+S.append(Paragraph("Claude (chat) for coding, for reading the shortlist as judge, and for drafting this doc; Python stdlib + reportlab; no paid tools. <b>Where the AI got it wrong:</b> its first parser assumed every scene starts with 'SCENE NN' and crashed on episode 6 ('SCENE HEADING:'), and its first scorer silently gave every single-segment clip a pace score of 0 - I only caught that by reading the top-ranked output against the scripts, not from any error message.", B))
+d.build(S)

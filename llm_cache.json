@@ -1,0 +1,1412 @@
+{
+ "1:11.05-43.40": {
+  "hook_score": 6,
+  "cliffhanger_score": 7,
+  "standalone_score": 9,
+  "spoiler_risk": 1,
+  "overall": 7.0,
+  "problem": "none",
+  "why": "Cold-open on the show's core premise: a bride is told 'Not anymore' and sees her groom holding her sister's hand; ends on the reveal 'Because he is marrying me.'",
+  "judge": "claude (chat)"
+ },
+ "1:38.85-74.60": {
+  "hook_score": 5,
+  "cliffhanger_score": 6,
+  "standalone_score": 7,
+  "spoiler_risk": 1,
+  "overall": 5.5,
+  "problem": "needs_context",
+  "why": "Escalating betrayal Q&A but starts mid-reveal and ends on an unanswered 'How long?'",
+  "judge": "claude (chat)"
+ },
+ "1:116.75-137.30": {
+  "hook_score": 5,
+  "cliffhanger_score": 6,
+  "standalone_score": 8,
+  "spoiler_risk": 1,
+  "overall": 6.0,
+  "problem": "short",
+  "why": "Public humiliation ('plainness and low value') ends on an ominous string swell; short at ~20s.",
+  "judge": "claude (chat)"
+ },
+ "2:12.15-37.40": {
+  "hook_score": 4,
+  "cliffhanger_score": 3,
+  "standalone_score": 6,
+  "spoiler_risk": 1,
+  "overall": 4.0,
+  "problem": "weak_hook",
+  "why": "Dialogue-only argument, no striking beat.",
+  "judge": "claude (chat)"
+ },
+ "2:34.05-65.80": {
+  "hook_score": 5,
+  "cliffhanger_score": 4,
+  "standalone_score": 6,
+  "spoiler_risk": 1,
+  "overall": 4.5,
+  "problem": "weak_ending",
+  "why": "Sister's insults are fun but nothing is left unresolved at the end.",
+  "judge": "claude (chat)"
+ },
+ "2:63.50-110.00": {
+  "hook_score": 4,
+  "cliffhanger_score": 3,
+  "standalone_score": 6,
+  "spoiler_risk": 1,
+  "overall": 4.0,
+  "problem": "resolved_ending",
+  "why": "Ends on Juliana's dignified closing speech, which resolves the scene instead of teasing.",
+  "judge": "claude (chat)"
+ },
+ "3:25.65-63.50": {
+  "hook_score": 6,
+  "cliffhanger_score": 6,
+  "standalone_score": 9,
+  "spoiler_risk": 1,
+  "overall": 7.0,
+  "problem": "none",
+  "why": "'Guards! Remove her!' - an outcast bride dragged from her mother's church; viewer needs to know who saves her.",
+  "judge": "claude (chat)"
+ },
+ "3:62.40-84.20": {
+  "hook_score": 7,
+  "cliffhanger_score": 6,
+  "standalone_score": 9,
+  "spoiler_risk": 1,
+  "overall": 7.5,
+  "problem": "none",
+  "why": "Guards drag her out, a scarred stranger steps in with 'Take your hands off her' and blocks a strike; strong hero-entrance.",
+  "judge": "claude (chat)"
+ },
+ "3:85.35-93.90|3:110.65-145.75": {
+  "hook_score": 7,
+  "cliffhanger_score": 9,
+  "standalone_score": 8,
+  "spoiler_risk": 2,
+  "overall": 8.5,
+  "problem": "none",
+  "why": "Fight-to-proposal cut (skips the aftermath): the stranger offers the abandoned bride his hand mid-aisle - high-concept romantic cliffhanger.",
+  "judge": "claude (chat)"
+ },
+ "4:19.75-59.10": {
+  "hook_score": 4,
+  "cliffhanger_score": 4,
+  "standalone_score": 6,
+  "spoiler_risk": 2,
+  "overall": 4.0,
+  "problem": "weak_hook",
+  "why": "Quiet persuasion talk, low stakes.",
+  "judge": "claude (chat)"
+ },
+ "4:53.35-86.10": {
+  "hook_score": 5,
+  "cliffhanger_score": 5,
+  "standalone_score": 7,
+  "spoiler_risk": 2,
+  "overall": 5.5,
+  "problem": "spoils_prev_cliffhanger",
+  "why": "'Then I accept' pays off episode 3's cliffhanger; better as a follow-up than a first post.",
+  "judge": "claude (chat)"
+ },
+ "4:115.00-151.40": {
+  "hook_score": 7,
+  "cliffhanger_score": 3,
+  "standalone_score": 7,
+  "spoiler_risk": 2,
+  "overall": 5.0,
+  "problem": "weak_ending",
+  "why": "'You are disowned!' is a strong open, but the walk-out ending is triumphant, not a cliffhanger.",
+  "judge": "claude (chat)"
+ },
+ "5:3.95-29.20": {
+  "hook_score": 7,
+  "cliffhanger_score": 5,
+  "standalone_score": 8,
+  "spoiler_risk": 1,
+  "overall": 6.0,
+  "problem": "none",
+  "why": "Father disowns her on church steps: 'dead to the Ashcroft family' - clear stakes, quick.",
+  "judge": "claude (chat)"
+ },
+ "5:29.25-57.10": {
+  "hook_score": 5,
+  "cliffhanger_score": 8,
+  "standalone_score": 8,
+  "spoiler_risk": 1,
+  "overall": 7.0,
+  "problem": "none",
+  "why": "Stepmother flings the mother's ledger into the mud - 'Barbara, don't!' - ends mid-outrage.",
+  "judge": "claude (chat)"
+ },
+ "5:55.25-110.50": {
+  "hook_score": 7,
+  "cliffhanger_score": 5,
+  "standalone_score": 7,
+  "spoiler_risk": 1,
+  "overall": 5.5,
+  "problem": "long",
+  "why": "Good emotional payoff but 55s with a soft ending.",
+  "judge": "claude (chat)"
+ },
+ "6:0.00-28.00": {
+  "hook_score": 2,
+  "cliffhanger_score": 4,
+  "standalone_score": 6,
+  "spoiler_risk": 1,
+  "overall": 2.5,
+  "problem": "slow",
+  "why": "Atmospheric walk to cottage, no conflict.",
+  "judge": "claude (chat)"
+ },
+ "6:29.90-60.30": {
+  "hook_score": 4,
+  "cliffhanger_score": 4,
+  "standalone_score": 6,
+  "spoiler_risk": 1,
+  "overall": 3.0,
+  "problem": "slow",
+  "why": "Quiet cottage arrival.",
+  "judge": "claude (chat)"
+ },
+ "6:74.30-115.00": {
+  "hook_score": 4,
+  "cliffhanger_score": 3,
+  "standalone_score": 6,
+  "spoiler_risk": 1,
+  "overall": 3.0,
+  "problem": "slow",
+  "why": "Domestic/romantic lull.",
+  "judge": "claude (chat)"
+ },
+ "7:0.00-32.60": {
+  "hook_score": 3,
+  "cliffhanger_score": 3,
+  "standalone_score": 6,
+  "spoiler_risk": 1,
+  "overall": 3.5,
+  "problem": "weak_hook",
+  "why": "Arrival of antagonists, opens on chores.",
+  "judge": "claude (chat)"
+ },
+ "7:32.95-69.50": {
+  "hook_score": 5,
+  "cliffhanger_score": 6,
+  "standalone_score": 7,
+  "spoiler_risk": 1,
+  "overall": 6.0,
+  "problem": "none",
+  "why": "Gerald mocks her hands, then threatens to 'make a beggar disappear' - ends asking where her husband is.",
+  "judge": "claude (chat)"
+ },
+ "7:65.60-96.80": {
+  "hook_score": 6,
+  "cliffhanger_score": 4,
+  "standalone_score": 7,
+  "spoiler_risk": 1,
+  "overall": 5.5,
+  "problem": "resolved_ending",
+  "why": "Husband appears and the villains flee - satisfying but resolved.",
+  "judge": "claude (chat)"
+ },
+ "8:4.85-37.20": {
+  "hook_score": 3,
+  "cliffhanger_score": 4,
+  "standalone_score": 6,
+  "spoiler_risk": 1,
+  "overall": 2.5,
+  "problem": "slow",
+  "why": "Herb-lore bonding.",
+  "judge": "claude (chat)"
+ },
+ "8:35.55-63.10": {
+  "hook_score": 3,
+  "cliffhanger_score": 5,
+  "standalone_score": 6,
+  "spoiler_risk": 1,
+  "overall": 2.5,
+  "problem": "slow",
+  "why": "Herb-lore bonding.",
+  "judge": "claude (chat)"
+ },
+ "9:6.05-36.10": {
+  "hook_score": 7,
+  "cliffhanger_score": 3,
+  "standalone_score": 6,
+  "spoiler_risk": 1,
+  "overall": 5.0,
+  "problem": "weak_ending",
+  "why": "'My boy is burning with fever!' is a strong open but the clip ends mid-treatment.",
+  "judge": "claude (chat)"
+ },
+ "9:40.80-74.80": {
+  "hook_score": 3,
+  "cliffhanger_score": 3,
+  "standalone_score": 6,
+  "spoiler_risk": 1,
+  "overall": 3.0,
+  "problem": "slow",
+  "why": "Procedure scene, ends resolved.",
+  "judge": "claude (chat)"
+ },
+ "9:90.35-115.50": {
+  "hook_score": 4,
+  "cliffhanger_score": 5,
+  "standalone_score": 4,
+  "spoiler_risk": 5,
+  "overall": 4.5,
+  "problem": "needs_context",
+  "why": "Rumour that the veteran resembles the dead Duke - intriguing only if you know the story.",
+  "judge": "claude (chat)"
+ },
+ "10:0.00-25.20": {
+  "hook_score": 4,
+  "cliffhanger_score": 4,
+  "standalone_score": 6,
+  "spoiler_risk": 1,
+  "overall": 4.0,
+  "problem": "weak_hook",
+  "why": null,
+  "judge": "claude (chat)"
+ },
+ "10:22.95-57.90": {
+  "hook_score": 6,
+  "cliffhanger_score": 4,
+  "standalone_score": 6,
+  "spoiler_risk": 1,
+  "overall": 5.0,
+  "problem": "weak_ending",
+  "why": "Wound-tending romance beat.",
+  "judge": "claude (chat)"
+ },
+ "10:55.35-79.30": {
+  "hook_score": 5,
+  "cliffhanger_score": 5,
+  "standalone_score": 6,
+  "spoiler_risk": 1,
+  "overall": 5.0,
+  "problem": "weak_ending",
+  "why": null,
+  "judge": "claude (chat)"
+ },
+ "11:14.40-41.40": {
+  "hook_score": 7,
+  "cliffhanger_score": 4,
+  "standalone_score": 7,
+  "spoiler_risk": 1,
+  "overall": 5.5,
+  "problem": "none",
+  "why": "'Your husband stole my gold pocket watch!' - frame-up begins; ends before the twist.",
+  "judge": "claude (chat)"
+ },
+ "11:39.45-65.70": {
+  "hook_score": 5,
+  "cliffhanger_score": 5,
+  "standalone_score": 7,
+  "spoiler_risk": 1,
+  "overall": 5.0,
+  "problem": "slow",
+  "why": null,
+  "judge": "claude (chat)"
+ },
+ "11:61.80-112.75": {
+  "hook_score": 6,
+  "cliffhanger_score": 8,
+  "standalone_score": 7,
+  "spoiler_risk": 1,
+  "overall": 7.0,
+  "problem": "none",
+  "why": "The planted pocket watch is 'found' in his coat: 'There it is. Ha!' - frame-up lands, wife's face pales.",
+  "judge": "claude (chat)"
+ },
+ "12:5.45-27.90": {
+  "hook_score": 7,
+  "cliffhanger_score": 7,
+  "standalone_score": 7,
+  "spoiler_risk": 1,
+  "overall": 7.0,
+  "problem": "none",
+  "why": "'You planted it!' - wife accuses her ex in front of a constable; quick and accusatory.",
+  "judge": "claude (chat)"
+ },
+ "12:26.80-57.00": {
+  "hook_score": 6,
+  "cliffhanger_score": 6,
+  "standalone_score": 6,
+  "spoiler_risk": 1,
+  "overall": 6.5,
+  "problem": "needs_context",
+  "why": "Sadistic ultimatum begins but needs earlier setup.",
+  "judge": "claude (chat)"
+ },
+ "12:65.15-87.21": {
+  "hook_score": 8,
+  "cliffhanger_score": 8,
+  "standalone_score": 8,
+  "spoiler_risk": 1,
+  "overall": 8.5,
+  "problem": "none",
+  "why": "'Fail, or refuse, and your husband hangs.' She locks eyes with the villain and asks where the garden is - perfect hook-to-cliffhanger.",
+  "judge": "claude (chat)"
+ },
+ "13:23.95-78.30": {
+  "hook_score": 6,
+  "cliffhanger_score": 5,
+  "standalone_score": 6,
+  "spoiler_risk": 1,
+  "overall": 6.0,
+  "problem": "long",
+  "why": "Crawling into briars for her husband; 54s long.",
+  "judge": "claude (chat)"
+ },
+ "13:78.25-106.80": {
+  "hook_score": 7,
+  "cliffhanger_score": 8,
+  "standalone_score": 6,
+  "spoiler_risk": 1,
+  "overall": 7.0,
+  "problem": "needs_context",
+  "why": "Blood-streaked hands, husband screaming 'Stop!', her finger touches metal - visceral ending; needs context for the why.",
+  "judge": "claude (chat)"
+ },
+ "14:0.50-25.00": {
+  "hook_score": 7,
+  "cliffhanger_score": 3,
+  "standalone_score": 6,
+  "spoiler_risk": 1,
+  "overall": 5.5,
+  "problem": "weak_ending",
+  "why": "Strong image ('I found it. Now release my husband') but ends in tenderness.",
+  "judge": "claude (chat)"
+ },
+ "14:35.55-87.30": {
+  "hook_score": 3,
+  "cliffhanger_score": 3,
+  "standalone_score": 6,
+  "spoiler_risk": 1,
+  "overall": 3.5,
+  "problem": "slow",
+  "why": null,
+  "judge": "claude (chat)"
+ },
+ "15:8.25-31.50": {
+  "hook_score": 6,
+  "cliffhanger_score": 4,
+  "standalone_score": 6,
+  "spoiler_risk": 1,
+  "overall": 5.0,
+  "problem": "weak_ending",
+  "why": null,
+  "judge": "claude (chat)"
+ },
+ "15:27.25-55.70": {
+  "hook_score": 6,
+  "cliffhanger_score": 5,
+  "standalone_score": 6,
+  "spoiler_risk": 1,
+  "overall": 5.5,
+  "problem": "none",
+  "why": null,
+  "judge": "claude (chat)"
+ },
+ "15:57.30-86.00": {
+  "hook_score": 6,
+  "cliffhanger_score": 8,
+  "standalone_score": 7,
+  "spoiler_risk": 1,
+  "overall": 7.0,
+  "problem": "none",
+  "why": "Thugs crush her mother's herbs; she cries 'Alexander...' and he steps between - 'You want to fight us, veteran?'",
+  "judge": "claude (chat)"
+ },
+ "16:1.85-22.10": {
+  "hook_score": 6,
+  "cliffhanger_score": 5,
+  "standalone_score": 7,
+  "spoiler_risk": 1,
+  "overall": 6.0,
+  "problem": "none",
+  "why": "Hero catches the descending club bare-handed - action opener.",
+  "judge": "claude (chat)"
+ },
+ "16:19.20-54.70": {
+  "hook_score": 7,
+  "cliffhanger_score": 7,
+  "standalone_score": 7,
+  "spoiler_risk": 2,
+  "overall": 7.0,
+  "problem": "none",
+  "why": "Thug slammed into mud, 'Gerald Harrington paid us!' - villain unmasked.",
+  "judge": "claude (chat)"
+ },
+ "16:48.80-83.19": {
+  "hook_score": 6,
+  "cliffhanger_score": 4,
+  "standalone_score": 7,
+  "spoiler_risk": 2,
+  "overall": 5.5,
+  "problem": "weak_ending",
+  "why": null,
+  "judge": "claude (chat)"
+ },
+ "17:3.00-26.00": {
+  "hook_score": 2,
+  "cliffhanger_score": 3,
+  "standalone_score": 6,
+  "spoiler_risk": 1,
+  "overall": 2.5,
+  "problem": "slow",
+  "why": null,
+  "judge": "claude (chat)"
+ },
+ "17:42.55-95.50": {
+  "hook_score": 2,
+  "cliffhanger_score": 3,
+  "standalone_score": 6,
+  "spoiler_risk": 1,
+  "overall": 2.5,
+  "problem": "slow",
+  "why": null,
+  "judge": "claude (chat)"
+ },
+ "17:90.15-118.88": {
+  "hook_score": 3,
+  "cliffhanger_score": 3,
+  "standalone_score": 6,
+  "spoiler_risk": 1,
+  "overall": 3.0,
+  "problem": "slow",
+  "why": null,
+  "judge": "claude (chat)"
+ },
+ "18:6.25-28.90": {
+  "hook_score": 8,
+  "cliffhanger_score": 5,
+  "standalone_score": 7,
+  "spoiler_risk": 1,
+  "overall": 6.5,
+  "problem": "none",
+  "why": "'Juliana bolts upright, house on fire' - instant-alarm open; ends 'Fire.'",
+  "judge": "claude (chat)"
+ },
+ "18:86.50-142.80": {
+  "hook_score": 5,
+  "cliffhanger_score": 3,
+  "standalone_score": 6,
+  "spoiler_risk": 1,
+  "overall": 4.0,
+  "problem": "weak_ending",
+  "why": null,
+  "judge": "claude (chat)"
+ },
+ "18:157.75-192.00": {
+  "hook_score": 4,
+  "cliffhanger_score": 5,
+  "standalone_score": 6,
+  "spoiler_risk": 1,
+  "overall": 5.0,
+  "problem": "weak_hook",
+  "why": null,
+  "judge": "claude (chat)"
+ },
+ "19:5.10-34.80": {
+  "hook_score": 2,
+  "cliffhanger_score": 3,
+  "standalone_score": 5,
+  "spoiler_risk": 2,
+  "overall": 3.0,
+  "problem": "slow",
+  "why": null,
+  "judge": "claude (chat)"
+ },
+ "19:44.05-85.80": {
+  "hook_score": 6,
+  "cliffhanger_score": 6,
+  "standalone_score": 4,
+  "spoiler_risk": 7,
+  "overall": 5.5,
+  "problem": "spoiler",
+  "why": "Informant calls Alexander 'Your Grace' - reveals the twist too early.",
+  "judge": "claude (chat)"
+ },
+ "19:83.75-106.50": {
+  "hook_score": 3,
+  "cliffhanger_score": 4,
+  "standalone_score": 5,
+  "spoiler_risk": 5,
+  "overall": 4.0,
+  "problem": "weak_hook",
+  "why": null,
+  "judge": "claude (chat)"
+ },
+ "20:15.40-39.40": {
+  "hook_score": 6,
+  "cliffhanger_score": 5,
+  "standalone_score": 6,
+  "spoiler_risk": 2,
+  "overall": 5.5,
+  "problem": "needs_context",
+  "why": "Villains plot to poison the Dowager; fine as a villain-intro.",
+  "judge": "claude (chat)"
+ },
+ "20:39.40-70.50": {
+  "hook_score": 4,
+  "cliffhanger_score": 4,
+  "standalone_score": 5,
+  "spoiler_risk": 2,
+  "overall": 4.5,
+  "problem": "none",
+  "why": null,
+  "judge": "claude (chat)"
+ },
+ "20:70.60-114.75": {
+  "hook_score": 4,
+  "cliffhanger_score": 5,
+  "standalone_score": 5,
+  "spoiler_risk": 2,
+  "overall": 4.5,
+  "problem": "none",
+  "why": null,
+  "judge": "claude (chat)"
+ },
+ "21:3.95-35.80": {
+  "hook_score": 7,
+  "cliffhanger_score": 6,
+  "standalone_score": 7,
+  "spoiler_risk": 1,
+  "overall": 6.5,
+  "problem": "none",
+  "why": "'Toby is dying!' - ticking-clock plea; ends 'You are his only hope.'",
+  "judge": "claude (chat)"
+ },
+ "21:31.00-58.20": {
+  "hook_score": 5,
+  "cliffhanger_score": 5,
+  "standalone_score": 6,
+  "spoiler_risk": 1,
+  "overall": 5.0,
+  "problem": "none",
+  "why": null,
+  "judge": "claude (chat)"
+ },
+ "21:71.75-114.00": {
+  "hook_score": 4,
+  "cliffhanger_score": 3,
+  "standalone_score": 6,
+  "spoiler_risk": 1,
+  "overall": 4.0,
+  "problem": "resolved_ending",
+  "why": null,
+  "judge": "claude (chat)"
+ },
+ "22:21.75-42.80": {
+  "hook_score": 6,
+  "cliffhanger_score": 5,
+  "standalone_score": 6,
+  "spoiler_risk": 1,
+  "overall": 5.5,
+  "problem": "needs_context",
+  "why": "'I saved Toby. I can save her.' - infiltration setup.",
+  "judge": "claude (chat)"
+ },
+ "22:65.75-108.80": {
+  "hook_score": 4,
+  "cliffhanger_score": 4,
+  "standalone_score": 6,
+  "spoiler_risk": 1,
+  "overall": 4.0,
+  "problem": "slow",
+  "why": null,
+  "judge": "claude (chat)"
+ },
+ "22:105.50-131.00": {
+  "hook_score": 5,
+  "cliffhanger_score": 6,
+  "standalone_score": 6,
+  "spoiler_risk": 1,
+  "overall": 6.0,
+  "problem": "none",
+  "why": "Dying Duchess convulses as Juliana asks 'Who has been treating you?'",
+  "judge": "claude (chat)"
+ },
+ "23:16.55-60.00": {
+  "hook_score": 5,
+  "cliffhanger_score": 6,
+  "standalone_score": 6,
+  "spoiler_risk": 1,
+  "overall": 5.5,
+  "problem": "none",
+  "why": null,
+  "judge": "claude (chat)"
+ },
+ "23:58.25-84.30": {
+  "hook_score": 6,
+  "cliffhanger_score": 5,
+  "standalone_score": 6,
+  "spoiler_risk": 1,
+  "overall": 5.5,
+  "problem": "none",
+  "why": null,
+  "judge": "claude (chat)"
+ },
+ "23:81.75-131.50": {
+  "hook_score": 7,
+  "cliffhanger_score": 8,
+  "standalone_score": 7,
+  "spoiler_risk": 1,
+  "overall": 7.5,
+  "problem": "none",
+  "why": "'Poison? - Arsenic.' ... then 'someone is coming' - reveal and threat in 50s.",
+  "judge": "claude (chat)"
+ },
+ "24:6.80-34.80": {
+  "hook_score": 5,
+  "cliffhanger_score": 8,
+  "standalone_score": 7,
+  "spoiler_risk": 1,
+  "overall": 7.0,
+  "problem": "none",
+  "why": "Noblewoman cracks a riding crop across the maid's body as the clip ends - hard cut on violence.",
+  "judge": "claude (chat)"
+ },
+ "24:32.50-70.50": {
+  "hook_score": 8,
+  "cliffhanger_score": 5,
+  "standalone_score": 7,
+  "spoiler_risk": 1,
+  "overall": 6.5,
+  "problem": "none",
+  "why": "Opens on the whip strike; ends on 'Do you want the same punishment?'",
+  "judge": "claude (chat)"
+ },
+ "24:68.00-92.00": {
+  "hook_score": 4,
+  "cliffhanger_score": 4,
+  "standalone_score": 6,
+  "spoiler_risk": 1,
+  "overall": 4.5,
+  "problem": "none",
+  "why": null,
+  "judge": "claude (chat)"
+ },
+ "25:18.80-51.50": {
+  "hook_score": 4,
+  "cliffhanger_score": 5,
+  "standalone_score": 6,
+  "spoiler_risk": 2,
+  "overall": 4.5,
+  "problem": "none",
+  "why": null,
+  "judge": "claude (chat)"
+ },
+ "25:46.75-82.10": {
+  "hook_score": 5,
+  "cliffhanger_score": 5,
+  "standalone_score": 6,
+  "spoiler_risk": 2,
+  "overall": 5.0,
+  "problem": "none",
+  "why": null,
+  "judge": "claude (chat)"
+ },
+ "25:137.15-159.50": {
+  "hook_score": 4,
+  "cliffhanger_score": 4,
+  "standalone_score": 5,
+  "spoiler_risk": 2,
+  "overall": 4.0,
+  "problem": "none",
+  "why": null,
+  "judge": "claude (chat)"
+ },
+ "26:0.00-47.30": {
+  "hook_score": 5,
+  "cliffhanger_score": 5,
+  "standalone_score": 5,
+  "spoiler_risk": 2,
+  "overall": 5.5,
+  "problem": "none",
+  "why": null,
+  "judge": "claude (chat)"
+ },
+ "26:55.75-79.70": {
+  "hook_score": 8,
+  "cliffhanger_score": 5,
+  "standalone_score": 6,
+  "spoiler_risk": 2,
+  "overall": 6.0,
+  "problem": "none",
+  "why": "'They are poisoning me in my own bed, aren't they?' - blunt hook.",
+  "judge": "claude (chat)"
+ },
+ "26:79.75-120.88": {
+  "hook_score": 5,
+  "cliffhanger_score": 9,
+  "standalone_score": 6,
+  "spoiler_risk": 4,
+  "overall": 7.5,
+  "problem": "weak_hook",
+  "why": "Duchess spots the ring: 'Where did you get this ring? Speak to me!' - great ending; opening 10s is slow, trim candidate.",
+  "judge": "claude (chat)"
+ },
+ "27:34.95-55.90": {
+  "hook_score": 8,
+  "cliffhanger_score": 9,
+  "standalone_score": 6,
+  "spoiler_risk": 4,
+  "overall": 8.5,
+  "problem": "none",
+  "why": "'My lost son wore that ring!' then the doors burst open on the villains - hook and cliffhanger in 21s.",
+  "judge": "claude (chat)"
+ },
+ "27:93.05-122.90": {
+  "hook_score": 4,
+  "cliffhanger_score": 5,
+  "standalone_score": 6,
+  "spoiler_risk": 2,
+  "overall": 5.5,
+  "problem": "none",
+  "why": null,
+  "judge": "claude (chat)"
+ },
+ "27:124.55-150.50": {
+  "hook_score": 7,
+  "cliffhanger_score": 8,
+  "standalone_score": 6,
+  "spoiler_risk": 1,
+  "overall": 7.5,
+  "problem": "none",
+  "why": "Her own words are twisted into a confession of poisoning and she is dragged away.",
+  "judge": "claude (chat)"
+ },
+ "28:15.05-40.30": {
+  "hook_score": 7,
+  "cliffhanger_score": 6,
+  "standalone_score": 6,
+  "spoiler_risk": 1,
+  "overall": 6.0,
+  "problem": "none",
+  "why": "'I did not poison her!' - frame-up vs. the Duchess waking.",
+  "judge": "claude (chat)"
+ },
+ "28:61.60-97.30": {
+  "hook_score": 5,
+  "cliffhanger_score": 8,
+  "standalone_score": 6,
+  "spoiler_risk": 3,
+  "overall": 6.5,
+  "problem": "none",
+  "why": "Villain opens the heirloom herbarium and exposes Juliana's secret identity.",
+  "judge": "claude (chat)"
+ },
+ "28:113.05-138.50": {
+  "hook_score": 5,
+  "cliffhanger_score": 6,
+  "standalone_score": 6,
+  "spoiler_risk": 1,
+  "overall": 6.0,
+  "problem": "none",
+  "why": "Catherine taunts her fall and threatens the gallows.",
+  "judge": "claude (chat)"
+ },
+ "29:7.15-41.80": {
+  "hook_score": 5,
+  "cliffhanger_score": 5,
+  "standalone_score": 6,
+  "spoiler_risk": 1,
+  "overall": 5.5,
+  "problem": "none",
+  "why": null,
+  "judge": "claude (chat)"
+ },
+ "29:40.10-74.60": {
+  "hook_score": 4,
+  "cliffhanger_score": 5,
+  "standalone_score": 6,
+  "spoiler_risk": 1,
+  "overall": 5.0,
+  "problem": "none",
+  "why": null,
+  "judge": "claude (chat)"
+ },
+ "29:71.85-105.60": {
+  "hook_score": 4,
+  "cliffhanger_score": 5,
+  "standalone_score": 6,
+  "spoiler_risk": 1,
+  "overall": 5.0,
+  "problem": "none",
+  "why": null,
+  "judge": "claude (chat)"
+ },
+ "30:33.40-91.60": {
+  "hook_score": 5,
+  "cliffhanger_score": 6,
+  "standalone_score": 5,
+  "spoiler_risk": 1,
+  "overall": 5.5,
+  "problem": "long",
+  "why": null,
+  "judge": "claude (chat)"
+ },
+ "30:88.75-121.80": {
+  "hook_score": 7,
+  "cliffhanger_score": 6,
+  "standalone_score": 6,
+  "spoiler_risk": 1,
+  "overall": 6.5,
+  "problem": "none",
+  "why": "'Do not hide the evidence, manufacture it.' - conspirators fabricate a witchcraft charge.",
+  "judge": "claude (chat)"
+ },
+ "30:125.25-151.21": {
+  "hook_score": 8,
+  "cliffhanger_score": 6,
+  "standalone_score": 6,
+  "spoiler_risk": 1,
+  "overall": 7.0,
+  "problem": "none",
+  "why": "'She will hang. A perfect solution.' - villains seal her fate.",
+  "judge": "claude (chat)"
+ },
+ "31:14.00-54.80": {
+  "hook_score": 4,
+  "cliffhanger_score": 4,
+  "standalone_score": 6,
+  "spoiler_risk": 1,
+  "overall": 5.0,
+  "problem": "none",
+  "why": null,
+  "judge": "claude (chat)"
+ },
+ "31:83.25-122.30": {
+  "hook_score": 5,
+  "cliffhanger_score": 6,
+  "standalone_score": 6,
+  "spoiler_risk": 1,
+  "overall": 5.5,
+  "problem": "none",
+  "why": null,
+  "judge": "claude (chat)"
+ },
+ "31:130.75-160.00": {
+  "hook_score": 6,
+  "cliffhanger_score": 7,
+  "standalone_score": 6,
+  "spoiler_risk": 1,
+  "overall": 6.5,
+  "problem": "none",
+  "why": "'One flame, and your mother's life's work becomes ash.' - she cries 'No!'",
+  "judge": "claude (chat)"
+ },
+ "32:19.95-47.40": {
+  "hook_score": 8,
+  "cliffhanger_score": 5,
+  "standalone_score": 6,
+  "spoiler_risk": 1,
+  "overall": 7.0,
+  "problem": "none",
+  "why": "'Burn it.' - the prisoner's shock reversal.",
+  "judge": "claude (chat)"
+ },
+ "32:43.40-79.40": {
+  "hook_score": 5,
+  "cliffhanger_score": 5,
+  "standalone_score": 6,
+  "spoiler_risk": 1,
+  "overall": 5.5,
+  "problem": "none",
+  "why": null,
+  "judge": "claude (chat)"
+ },
+ "32:119.60-154.38": {
+  "hook_score": 7,
+  "cliffhanger_score": 9,
+  "standalone_score": 6,
+  "spoiler_risk": 1,
+  "overall": 7.5,
+  "problem": "graphic",
+  "why": "Glowing brand stops millimetres from her eye - maximum-tension ending (check platform rules for torture content).",
+  "judge": "claude (chat)"
+ },
+ "33:2.50-40.30": {
+  "hook_score": 5,
+  "cliffhanger_score": 4,
+  "standalone_score": 5,
+  "spoiler_risk": 1,
+  "overall": 4.5,
+  "problem": "none",
+  "why": null,
+  "judge": "claude (chat)"
+ },
+ "33:57.40-84.80": {
+  "hook_score": 5,
+  "cliffhanger_score": 6,
+  "standalone_score": 5,
+  "spoiler_risk": 1,
+  "overall": 5.5,
+  "problem": "none",
+  "why": null,
+  "judge": "claude (chat)"
+ },
+ "33:134.25-174.04": {
+  "hook_score": 5,
+  "cliffhanger_score": 5,
+  "standalone_score": 5,
+  "spoiler_risk": 1,
+  "overall": 5.5,
+  "problem": "none",
+  "why": null,
+  "judge": "claude (chat)"
+ },
+ "34:15.35-49.10": {
+  "hook_score": 4,
+  "cliffhanger_score": 5,
+  "standalone_score": 5,
+  "spoiler_risk": 1,
+  "overall": 5.0,
+  "problem": "none",
+  "why": null,
+  "judge": "claude (chat)"
+ },
+ "34:81.05-126.70": {
+  "hook_score": 5,
+  "cliffhanger_score": 5,
+  "standalone_score": 5,
+  "spoiler_risk": 1,
+  "overall": 5.0,
+  "problem": "none",
+  "why": null,
+  "judge": "claude (chat)"
+ },
+ "34:119.65-162.10": {
+  "hook_score": 5,
+  "cliffhanger_score": 6,
+  "standalone_score": 5,
+  "spoiler_risk": 1,
+  "overall": 5.5,
+  "problem": "none",
+  "why": null,
+  "judge": "claude (chat)"
+ },
+ "35:71.25-91.80": {
+  "hook_score": 3,
+  "cliffhanger_score": 4,
+  "standalone_score": 3,
+  "spoiler_risk": 5,
+  "overall": 4.0,
+  "problem": "needs_context",
+  "why": null,
+  "judge": "claude (chat)"
+ },
+ "35:89.55-125.50": {
+  "hook_score": 3,
+  "cliffhanger_score": 4,
+  "standalone_score": 3,
+  "spoiler_risk": 5,
+  "overall": 3.5,
+  "problem": "needs_context",
+  "why": null,
+  "judge": "claude (chat)"
+ },
+ "35:137.00-157.50": {
+  "hook_score": 6,
+  "cliffhanger_score": 7,
+  "standalone_score": 4,
+  "spoiler_risk": 5,
+  "overall": 5.5,
+  "problem": "needs_context",
+  "why": null,
+  "judge": "claude (chat)"
+ },
+ "36:96.55-119.60": {
+  "hook_score": 7,
+  "cliffhanger_score": 6,
+  "standalone_score": 4,
+  "spoiler_risk": 4,
+  "overall": 6.0,
+  "problem": "needs_context",
+  "why": "'They arrested her!' - hero learns his wife is in a cell.",
+  "judge": "claude (chat)"
+ },
+ "36:117.25-148.30": {
+  "hook_score": 5,
+  "cliffhanger_score": 6,
+  "standalone_score": 4,
+  "spoiler_risk": 4,
+  "overall": 5.5,
+  "problem": "needs_context",
+  "why": null,
+  "judge": "claude (chat)"
+ },
+ "36:146.25-200.75": {
+  "hook_score": 6,
+  "cliffhanger_score": 8,
+  "standalone_score": 4,
+  "spoiler_risk": 8,
+  "overall": 6.0,
+  "problem": "spoiler",
+  "why": "Strong 'their dead Duke is coming home' ending but gives away the twist.",
+  "judge": "claude (chat)"
+ },
+ "37:23.80-65.80": {
+  "hook_score": 8,
+  "cliffhanger_score": 6,
+  "standalone_score": 5,
+  "spoiler_risk": 2,
+  "overall": 6.5,
+  "problem": "needs_context",
+  "why": "'Juliana's execution comes after the wedding. Perfect timing.' - chilling villain hook.",
+  "judge": "claude (chat)"
+ },
+ "37:62.55-103.50": {
+  "hook_score": 5,
+  "cliffhanger_score": 5,
+  "standalone_score": 5,
+  "spoiler_risk": 2,
+  "overall": 5.5,
+  "problem": "none",
+  "why": null,
+  "judge": "claude (chat)"
+ },
+ "37:105.25-156.47": {
+  "hook_score": 5,
+  "cliffhanger_score": 4,
+  "standalone_score": 5,
+  "spoiler_risk": 2,
+  "overall": 4.5,
+  "problem": "none",
+  "why": null,
+  "judge": "claude (chat)"
+ },
+ "38:11.00-47.80": {
+  "hook_score": 4,
+  "cliffhanger_score": 4,
+  "standalone_score": 5,
+  "spoiler_risk": 1,
+  "overall": 4.0,
+  "problem": "slow",
+  "why": null,
+  "judge": "claude (chat)"
+ },
+ "38:45.25-87.91": {
+  "hook_score": 4,
+  "cliffhanger_score": 4,
+  "standalone_score": 5,
+  "spoiler_risk": 1,
+  "overall": 4.5,
+  "problem": "slow",
+  "why": null,
+  "judge": "claude (chat)"
+ },
+ "39:0.00-32.40": {
+  "hook_score": 2,
+  "cliffhanger_score": 3,
+  "standalone_score": 3,
+  "spoiler_risk": 2,
+  "overall": 3.0,
+  "problem": "slow",
+  "why": null,
+  "judge": "claude (chat)"
+ },
+ "39:29.80-66.90": {
+  "hook_score": 5,
+  "cliffhanger_score": 6,
+  "standalone_score": 4,
+  "spoiler_risk": 8,
+  "overall": 5.5,
+  "problem": "spoiler",
+  "why": null,
+  "judge": "claude (chat)"
+ },
+ "39:63.00-98.00": {
+  "hook_score": 6,
+  "cliffhanger_score": 8,
+  "standalone_score": 4,
+  "spoiler_risk": 9,
+  "overall": 5.5,
+  "problem": "spoiler",
+  "why": "'They buried Alexander three years ago. Today he comes home.' - big line, but a spoiler.",
+  "judge": "claude (chat)"
+ },
+ "40:12.15-33.50": {
+  "hook_score": 3,
+  "cliffhanger_score": 3,
+  "standalone_score": 4,
+  "spoiler_risk": 2,
+  "overall": 3.5,
+  "problem": "slow",
+  "why": null,
+  "judge": "claude (chat)"
+ },
+ "40:50.55-77.70": {
+  "hook_score": 5,
+  "cliffhanger_score": 5,
+  "standalone_score": 5,
+  "spoiler_risk": 2,
+  "overall": 5.0,
+  "problem": "none",
+  "why": null,
+  "judge": "claude (chat)"
+ },
+ "40:74.55-110.08": {
+  "hook_score": 4,
+  "cliffhanger_score": 4,
+  "standalone_score": 5,
+  "spoiler_risk": 2,
+  "overall": 4.5,
+  "problem": "none",
+  "why": null,
+  "judge": "claude (chat)"
+ },
+ "41:1.80-28.70": {
+  "hook_score": 6,
+  "cliffhanger_score": 6,
+  "standalone_score": 6,
+  "spoiler_risk": 1,
+  "overall": 6.5,
+  "problem": "none",
+  "why": "'Bring her in.' - bride-to-be is paraded in prison dress at a rival's wedding.",
+  "judge": "claude (chat)"
+ },
+ "41:34.55-60.80": {
+  "hook_score": 6,
+  "cliffhanger_score": 5,
+  "standalone_score": 6,
+  "spoiler_risk": 1,
+  "overall": 5.5,
+  "problem": "none",
+  "why": null,
+  "judge": "claude (chat)"
+ },
+ "41:57.75-96.09": {
+  "hook_score": 6,
+  "cliffhanger_score": 10,
+  "standalone_score": 6,
+  "spoiler_risk": 3,
+  "overall": 7.5,
+  "problem": "none",
+  "why": "'You needed a whole chapel to feel powerful over one chained woman?' - then the cathedral doors explode.",
+  "judge": "claude (chat)"
+ },
+ "42:16.80-40.10": {
+  "hook_score": 7,
+  "cliffhanger_score": 6,
+  "standalone_score": 4,
+  "spoiler_risk": 9,
+  "overall": 5.5,
+  "problem": "spoiler",
+  "why": null,
+  "judge": "claude (chat)"
+ },
+ "42:49.00-77.80": {
+  "hook_score": 4,
+  "cliffhanger_score": 2,
+  "standalone_score": 4,
+  "spoiler_risk": 10,
+  "overall": 3.5,
+  "problem": "spoiler",
+  "why": null,
+  "judge": "claude (chat)"
+ },
+ "43:16.20-75.20": {
+  "hook_score": 4,
+  "cliffhanger_score": 5,
+  "standalone_score": 4,
+  "spoiler_risk": 7,
+  "overall": 4.5,
+  "problem": "long",
+  "why": null,
+  "judge": "claude (chat)"
+ },
+ "43:71.40-96.70": {
+  "hook_score": 5,
+  "cliffhanger_score": 5,
+  "standalone_score": 4,
+  "spoiler_risk": 7,
+  "overall": 4.5,
+  "problem": "none",
+  "why": null,
+  "judge": "claude (chat)"
+ },
+ "43:93.15-114.96": {
+  "hook_score": 6,
+  "cliffhanger_score": 7,
+  "standalone_score": 3,
+  "spoiler_risk": 7,
+  "overall": 5.0,
+  "problem": "needs_context",
+  "why": null,
+  "judge": "claude (chat)"
+ },
+ "44:14.00-70.50": {
+  "hook_score": 4,
+  "cliffhanger_score": 5,
+  "standalone_score": 4,
+  "spoiler_risk": 6,
+  "overall": 4.5,
+  "problem": "long",
+  "why": null,
+  "judge": "claude (chat)"
+ },
+ "45:2.95-24.50": {
+  "hook_score": 5,
+  "cliffhanger_score": 3,
+  "standalone_score": 4,
+  "spoiler_risk": 9,
+  "overall": 4.0,
+  "problem": "spoiler",
+  "why": null,
+  "judge": "claude (chat)"
+ },
+ "45:54.00-83.30": {
+  "hook_score": 7,
+  "cliffhanger_score": 6,
+  "standalone_score": 4,
+  "spoiler_risk": 8,
+  "overall": 5.5,
+  "problem": "spoiler",
+  "why": null,
+  "judge": "claude (chat)"
+ },
+ "45:81.25-121.75": {
+  "hook_score": 6,
+  "cliffhanger_score": 9,
+  "standalone_score": 5,
+  "spoiler_risk": 6,
+  "overall": 6.5,
+  "problem": "needs_context",
+  "why": "'You are not his lawful wife' - marriage declared invalid at the altar.",
+  "judge": "claude (chat)"
+ },
+ "46:42.80-81.00": {
+  "hook_score": 4,
+  "cliffhanger_score": 4,
+  "standalone_score": 4,
+  "spoiler_risk": 4,
+  "overall": 4.0,
+  "problem": "slow",
+  "why": null,
+  "judge": "claude (chat)"
+ },
+ "46:78.10-106.80": {
+  "hook_score": 5,
+  "cliffhanger_score": 5,
+  "standalone_score": 4,
+  "spoiler_risk": 4,
+  "overall": 4.5,
+  "problem": "none",
+  "why": null,
+  "judge": "claude (chat)"
+ },
+ "46:111.75-143.88": {
+  "hook_score": 4,
+  "cliffhanger_score": 5,
+  "standalone_score": 4,
+  "spoiler_risk": 4,
+  "overall": 4.5,
+  "problem": "none",
+  "why": null,
+  "judge": "claude (chat)"
+ },
+ "47:23.15-45.80": {
+  "hook_score": 3,
+  "cliffhanger_score": 4,
+  "standalone_score": 5,
+  "spoiler_risk": 3,
+  "overall": 3.5,
+  "problem": "slow",
+  "why": null,
+  "judge": "claude (chat)"
+ },
+ "47:78.55-99.10": {
+  "hook_score": 6,
+  "cliffhanger_score": 4,
+  "standalone_score": 5,
+  "spoiler_risk": 2,
+  "overall": 5.5,
+  "problem": "none",
+  "why": null,
+  "judge": "claude (chat)"
+ },
+ "47:95.75-121.90": {
+  "hook_score": 6,
+  "cliffhanger_score": 5,
+  "standalone_score": 5,
+  "spoiler_risk": 2,
+  "overall": 5.5,
+  "problem": "none",
+  "why": null,
+  "judge": "claude (chat)"
+ },
+ "48:2.15-30.80": {
+  "hook_score": 4,
+  "cliffhanger_score": 5,
+  "standalone_score": 4,
+  "spoiler_risk": 1,
+  "overall": 4.0,
+  "problem": "none",
+  "why": null,
+  "judge": "claude (chat)"
+ },
+ "48:34.20-80.00": {
+  "hook_score": 4,
+  "cliffhanger_score": 5,
+  "standalone_score": 4,
+  "spoiler_risk": 1,
+  "overall": 4.5,
+  "problem": "none",
+  "why": null,
+  "judge": "claude (chat)"
+ },
+ "49:1.80-33.30": {
+  "hook_score": 4,
+  "cliffhanger_score": 5,
+  "standalone_score": 4,
+  "spoiler_risk": 1,
+  "overall": 4.5,
+  "problem": "none",
+  "why": null,
+  "judge": "claude (chat)"
+ },
+ "49:83.95-113.10": {
+  "hook_score": 4,
+  "cliffhanger_score": 4,
+  "standalone_score": 4,
+  "spoiler_risk": 1,
+  "overall": 4.0,
+  "problem": "none",
+  "why": null,
+  "judge": "claude (chat)"
+ },
+ "49:117.95-144.00": {
+  "hook_score": 4,
+  "cliffhanger_score": 5,
+  "standalone_score": 4,
+  "spoiler_risk": 1,
+  "overall": 4.5,
+  "problem": "none",
+  "why": null,
+  "judge": "claude (chat)"
+ },
+ "50:1.55-35.30": {
+  "hook_score": 5,
+  "cliffhanger_score": 3,
+  "standalone_score": 3,
+  "spoiler_risk": 1,
+  "overall": 3.5,
+  "problem": "none",
+  "why": null,
+  "judge": "claude (chat)"
+ },
+ "50:30.75-78.80": {
+  "hook_score": 6,
+  "cliffhanger_score": 9,
+  "standalone_score": 4,
+  "spoiler_risk": 1,
+  "overall": 6.5,
+  "problem": "needs_context",
+  "why": "Series-ending cliffhanger: a maid peeks through the door and gasps at what she sees.",
+  "judge": "claude (chat)"
+ }
+}

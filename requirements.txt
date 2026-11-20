@@ -1,0 +1,2 @@
+# core pipeline uses only the Python 3.9+ standard library
+streamlit   # only for app.py

@@ -58,10 +58,17 @@ def _post(url, headers, body, retries=3):
 
 def call_model(provider, model, prompt):
     if provider == "gemini":
-        key = os.environ["GEMINI_API_KEY"]; model = model or "gemini-2.0-flash"
-        r = _post(f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={key}", {},
-                  {"contents": [{"parts": [{"text": prompt}]}], "generationConfig": {"temperature": 0.2, "responseMimeType": "application/json"}})
-        return r["candidates"][0]["content"]["parts"][0]["text"]
+        key = os.environ["GEMINI_API_KEY"]
+        last = None
+        for m in ([model] if model else ["gemini-2.5-flash", "gemini-flash-latest", "gemini-2.0-flash"]):   # older names get retired: try several
+            try:
+                r = _post(f"https://generativelanguage.googleapis.com/v1beta/models/{m}:generateContent?key={key}", {},
+                          {"contents": [{"parts": [{"text": prompt}]}], "generationConfig": {"temperature": 0.2, "responseMimeType": "application/json"}})
+                return r["candidates"][0]["content"]["parts"][0]["text"]
+            except RuntimeError as ex:
+                last = f"[{m}] {ex}"
+                if not str(ex).startswith("404"): break
+        raise RuntimeError(last)
     if provider == "anthropic":
         key = os.environ["ANTHROPIC_API_KEY"]; model = model or "claude-haiku-4-5"
         r = _post("https://api.anthropic.com/v1/messages", {"x-api-key": key, "anthropic-version": "2023-06-01"},
@@ -83,6 +90,8 @@ def parse_json(txt):
 def cand_key(cand):
     return "|".join(f"{s.episode}:{s.start:.2f}-{s.end:.2f}" for s in cand.segments)
 
+SLEEP = 0.0   # seconds to wait after each LIVE call (free tiers allow only a few requests per minute)
+
 def judge(provider, model, context, ep, cand, cache_path=None):
     """Returns dict judgment or None. Judgments are cached by candidate key so re-runs are free."""
     cache = json.load(open(cache_path)) if cache_path and os.path.exists(cache_path) else {}
@@ -91,6 +100,7 @@ def judge(provider, model, context, ep, cand, cache_path=None):
     if provider in ("none", "cache"): return None
     try:
         j = parse_json(call_model(provider, model, build_prompt(context, ep, cand)))
+        if SLEEP: time.sleep(SLEEP)
     except Exception as ex:
         return {"error": str(ex)[:200]}
     if cache_path:

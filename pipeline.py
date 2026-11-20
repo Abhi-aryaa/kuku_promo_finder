@@ -5,7 +5,7 @@ Usage:
   GEMINI_API_KEY=... python pipeline.py --input ... --provider gemini                               # + LLM judge (free tier)
   python pipeline.py --input ... --provider cache --cache llm_cache.json                           # replay saved judgments
 """
-import argparse, json, csv, os, re
+import argparse, json, csv, os, re, sys
 from parser import load_pack, fmt
 from candidates import singles, joins, select, Segment
 import llm
@@ -46,6 +46,7 @@ def main():
     ap.add_argument("--per-ep", type=int, default=3, help="shortlist size per episode")
     ap.add_argument("--keep", type=int, default=2, help="max promos kept per episode in final list")
     ap.add_argument("--min-score", type=float, default=0.0)
+    ap.add_argument("--sleep", type=float, default=None, help="seconds between live LLM calls (default 4 for gemini free tier)")
     a = ap.parse_args()
     os.makedirs(a.out, exist_ok=True)
     if a.input.lower().endswith(".zip"):                       # accept the zip as delivered
@@ -60,11 +61,17 @@ def main():
         pool += select(singles(ep) + joins(ep), per_ep=a.per_ep)
     hmax = max(c.total for c in pool)
     use_llm = a.provider != "none"
-    rows = []
+    llm.SLEEP = a.sleep if a.sleep is not None else (4.0 if a.provider == "gemini" else 0.0)
+    rows = []; n_ok = n_err = n_missing = 0; first_err = None
     for c in pool:
         ep = byn[c.segments[0].episode]
         j = llm.judge(a.provider, a.model, ctx, ep, c, a.cache) if use_llm else None
+        if j and "error" in j:
+            n_err += 1; first_err = first_err or j["error"]
+        elif use_llm and not j:
+            n_missing += 1
         if j and "error" not in j:
+            n_ok += 1
             apply_trim(ep, c, j)
             ov = float(j.get("overall", 0)); sp = float(j.get("spoiler_risk", 0))
             final = 0.20 * (c.total / hmax * 10) + 0.65 * ov + 0.15 * float(j.get("standalone_score", 5)) - 0.15 * max(0, sp - 5)
@@ -77,6 +84,10 @@ def main():
             why = why_template(c, ep); prob = ",".join(c.flags) or "none"; src = "heuristic"
             j = j or {}
         rows.append(dict(c=c, ep=ep, final=round(final, 2), hook=hook, cliff=cliff, why=why, problem=prob, src=src, j=j))
+    print(f"Judge '{a.provider}': {n_ok}/{len(pool)} clips scored by the model, {n_err} failed, {n_missing} not in cache.")
+    if use_llm and a.provider != "cache" and n_ok == 0:
+        sys.exit(f"ALL model calls failed, so nothing was scored by the LLM. First error: {first_err}\nCheck the API key / model name / quota. Not writing results labelled as LLM-judged.")
+    if n_err: print(f"WARNING: {n_err} clips fell back to rule-score only (scored_by = heuristic). First error: {first_err}")
     # keep best N per episode, then rank globally
     # per-episode cap, then diversity-aware ranking: each extra promo from an episode already picked is discounted 1.0 pt,
     # so the "post first" list spreads across the plot instead of stacking one episode.
@@ -108,7 +119,7 @@ def main():
                         " + ".join(f"Ep{s['episode']} {s['start']}-{s['end']}" for s in p["segments"]),
                         p["hook"], p["cliffhanger"], p["why_it_works"], p["known_issue"]])
     with open(os.path.join(a.out, "promos_report.md"), "w", encoding="utf-8") as f:
-        f.write(f"# Promo finder report\n\n{len(out)} promos across {len(eps)} episodes. Scored by: {'LLM judge + heuristics' if use_llm else 'heuristics only'}.\n\n")
+        f.write(f"# Promo finder report\n\n{len(out)} promos across {len(eps)} episodes. Scored by: {('LLM judge on ' + str(n_ok) + '/' + str(len(pool)) + ' shortlisted clips (rest: heuristics)') if use_llm else 'heuristics only'}.\n\n")
         for p in out:
             segs = " + ".join(f"**Ep {s['episode']}  {s['start']} -> {s['end']}**" for s in p["segments"])
             f.write(f"## #{p['rank']}  [{p['tier']}]  {segs}  ({p['duration_s']}s, {p['type']}, score {p['score']})\n")

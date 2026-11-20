@@ -20,6 +20,8 @@ if st.button("Find promos") and up:
     else:
         P = json.load(open(os.path.join(d, "out", "promos.json")))
         st.success(f"{len(P)} promos")
+        st.info(r.stdout.strip()[-800:])
+        if any(x["scored_by"] == "heuristic" for x in P) and p != "none": st.warning("Some or all clips were NOT scored by the model (scored_by = heuristic). See the message above.")
         st.dataframe([{"rank": x["rank"], "tier": x["tier"], "cut": " + ".join(f"Ep{s['episode']} {s['start']}-{s['end']}" for s in x["segments"]),
                        "sec": x["duration_s"], "hook": x["hook"][:80], "cliffhanger": x["cliffhanger"][:80], "why": x["why_it_works"], "issue": x["known_issue"]} for x in P], use_container_width=True)
         for x in P[:10]:
@@ -28,8 +30,10 @@ if st.button("Find promos") and up:
 
 st.divider()
 st.header("Compare two runs (e.g. two different judge models)")
-a_up = st.file_uploader("promos.json from run 1", type="json", key="a"); b_up = st.file_uploader("promos.json from run 2", type="json", key="b")
+ups = st.file_uploader("promos.json files (2 or more)", type="json", accept_multiple_files=True, key="cmp")
 k = st.slider("Compare top-K", 5, 30, 10)
-if a_up and b_up:
-    from compare import report
-    st.markdown(report(json.load(a_up), json.load(b_up), k, "Run 1", "Run 2"))
+if len(ups) >= 2:
+    from compare import report, matrix
+    runs = [(u.name, json.load(u)) for u in ups]
+    if len(runs) == 2: st.markdown(report(runs[0][1], runs[1][1], k, runs[0][0], runs[1][0]))
+    else: st.markdown(matrix(runs, k))

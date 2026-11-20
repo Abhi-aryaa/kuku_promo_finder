@@ -31,6 +31,15 @@ def report(A, B, k, nameA="A", nameB="B"):
     L += [f"| {a} | {b} | {c} | {d if d else '-'} |" for a, b, c, d in r["rows"]]
     return "\n".join(L)
 
+def matrix(runs, k=10):
+    """runs = [(name, promos_list), ...] -> table of 'same clip in both top-k' counts for every pair."""
+    names = [n for n, _ in runs]
+    L = [f"# Agreement matrix (same clip in both top-{k}, out of {k})", "", "| | " + " | ".join(names) + " |", "|---|" + "---|" * len(names)]
+    for n1, A in runs:
+        L.append(f"| **{n1}** | " + " | ".join("-" if n1 == n2 else str(compare(A, B, k)["same_clip_in_both_topk"]) for n2, B in runs) + " |")
+    return "\n".join(L)
+
 if __name__ == "__main__":
-    A = json.load(open(sys.argv[1])); B = json.load(open(sys.argv[2])); k = int(sys.argv[3]) if len(sys.argv) > 3 else 10
-    print(report(A, B, k))
+    args = sys.argv[1:]; k = int(args.pop()) if args and args[-1].isdigit() else 10
+    runs = [(a.split("/")[-2] if "/" in a else a, json.load(open(a))) for a in args]
+    print(report(runs[0][1], runs[1][1], k, runs[0][0], runs[1][0]) if len(runs) == 2 else matrix(runs, k))
